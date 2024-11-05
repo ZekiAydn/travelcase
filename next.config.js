@@ -1,8 +1,6 @@
 const withTM = require('next-transpile-modules')([
     'antd',
     'rc-util',
-
-    'rc-picker',
 ]);
 
 module.exports = withTM({
