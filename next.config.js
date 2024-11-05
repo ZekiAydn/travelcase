@@ -1,7 +1,5 @@
 const withTM = require('next-transpile-modules')([
     'antd',
-    '@ant-design/icons',
-    '@ant-design/icons-svg',
     'rc-util',
     'rc-pagination',
     'rc-picker',
