@@ -3,6 +3,7 @@ const withTM = require('next-transpile-modules')([
     '@ant-design/icons',
     '@ant-design/icons-svg',
     'rc-util',
+    '@ant-design/icons-svg'
 ]);
 
 module.exports = withTM({
