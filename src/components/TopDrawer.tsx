@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Drawer, Button } from "antd";
 import { MenuOutlined, PhoneOutlined, HeartOutlined } from "@ant-design/icons";
-import Image from "next/image";
 import { useTranslation } from 'next-i18next';
 import LanguageSelector from "@/components/LanguageSelector";
 
