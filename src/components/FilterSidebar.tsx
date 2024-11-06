@@ -2,8 +2,9 @@ import { Input, Select, Button, Radio, DatePicker } from "antd";
 import { CalendarOutlined, EnvironmentOutlined, GlobalOutlined, MoonOutlined, TeamOutlined, FilterOutlined, StarFilled } from "@ant-design/icons";
 import { useTranslation } from 'next-i18next';
 import HotelConceptSelector from "@/components/ConceptSelector";
-import moment from "moment";
-import React from "react";
+import React, {useEffect, useState} from "react";
+import dayjs from "dayjs";
+
 
 const { Option } = Select;
 
@@ -24,7 +25,12 @@ interface FilterSidebarProps {
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, nightOptions, peopleOptions, filtersOpen, setFiltersOpen }) => {
     const { t } = useTranslation('common');
+    const initialDate = dayjs(filters.date);
+    const [selectedDate, setSelectedDate] = useState(initialDate);
 
+    useEffect(() => {
+        console.log('DATE =>',filters.date)
+    }, []);
     return (
         <>
         <div className="lg:hidden flex items-center self-end justify-between">
@@ -87,13 +93,14 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, nigh
                 <div className="flex items-center space-x-2 w-full sm:w-auto border rounded-lg">
                     <CalendarOutlined className="text-gray-700 text-xl ml-3" />
                     <DatePicker
-                        size="large"
-                        placeholder={t('selectDate')}
-                        className="rounded-md w-full"
-                        format="DD MMM YYYY"
+                        suffixIcon={null}
                         variant="borderless"
-                        value={moment(filters.date, "DD MMM YYYY")}
-                        onChange={(date) => setFilters("date", date ? date.format("DD MMM YYYY") : "")}
+                        size="large"
+                        placeholder={t('date')}
+                        className="text-gray-700 text-xs w-full"
+                        format="DD MMM"
+                        value={selectedDate}
+                        onChange={(v) => setSelectedDate(v)}
                     />
                 </div>
             </div>

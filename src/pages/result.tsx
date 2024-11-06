@@ -8,7 +8,6 @@ import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useState, useEffect } from "react";
 import { mockData } from "@/data/data";
-import moment from "moment";
 
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
@@ -27,7 +26,7 @@ export default function ResultPage() {
     const [filters, setFilters] = useState({
         from: Array.isArray(router.query.from) ? router.query.from[0] : router.query.from || "",
         destination: Array.isArray(router.query.destination) ? router.query.destination[0] : router.query.destination || "",
-        date: Array.isArray(router.query.date) ? router.query.date[0] : router.query.date || moment().format("DD MMM YYYY"),
+        date: Array.isArray(router.query.date) ? router.query.date[0] : router.query.date || "",
         nights: Array.isArray(router.query.nights) ? router.query.nights[0] : router.query.nights || "5 Nights",
         people: Array.isArray(router.query.people) ? router.query.people[0] : router.query.people || "2 People",
     });

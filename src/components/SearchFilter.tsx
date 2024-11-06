@@ -1,6 +1,5 @@
 import { CalendarOutlined, EnvironmentOutlined, MoonOutlined, SearchOutlined, TeamOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Divider, Input, Select } from "antd";
-import moment from "moment";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from 'next-i18next';
@@ -75,7 +74,7 @@ export default function SearchFilter() {
                             size="small"
                             placeholder={t('date')}
                             className="text-gray-700 text-xs w-full"
-                            format="DD MMM YYYY"
+                            format="DD MMM"
                             value={filters.date}
                             onChange={(e) => setFilters({ ...filters, date: e })}
                         />
