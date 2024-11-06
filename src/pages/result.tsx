@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { mockData } from "@/data/data";
 import moment from "moment";
 
+
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
     return {
         props: {
