@@ -4,7 +4,7 @@ import { useTranslation } from 'next-i18next';
 
 const HotelConceptSelector: React.FC = () => {
     const { t } = useTranslation('common');
-    const [selectedValues, setSelectedValues] = useState<string[]>([t('beachHotel')]);
+    const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
     const handleCheckboxChange = (checkedValues: string[]) => {
         setSelectedValues(checkedValues);
