@@ -93,6 +93,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, nigh
                         <Select
                             size="large"
                             className="w-full"
+                            variant="borderless"
                             value={localFilters.people}
                             onChange={(val) => handleInputChange("people", val)}
                         >
@@ -110,6 +111,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, nigh
                     <div className="flex items-center space-x-2 w-full sm:w-auto border rounded-lg">
                         <CalendarOutlined className="text-gray-700 text-xl ml-3" />
                         <DatePicker
+                            variant="borderless"
                             size="large"
                             placeholder={t('date')}
                             format="DD MMM"
@@ -125,6 +127,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, nigh
                     <div className="flex items-center space-x-2 w-full sm:w-auto border rounded-lg">
                         <MoonOutlined style={{ color: "#4A5568", marginLeft: 14 }} />
                         <Select
+                            variant="borderless"
                             size="large"
                             className="w-full"
                             value={localFilters.nights}
