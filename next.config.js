@@ -3,7 +3,7 @@ const withTM = require('next-transpile-modules')([
     '@ant-design/icons',
     '@ant-design/icons-svg',
     'rc-util',
-    '@ant-design/icons-svg'
+    'rc-tree'
 ]);
 
 module.exports = withTM({
@@ -13,7 +13,7 @@ module.exports = withTM({
     },
     i18n: {
         locales: ['en', 'tr'],
-        defaultLocale: 'en',
+        defaultLocale: 'tr',
     },
     experimental: {
         esmExternals: true,

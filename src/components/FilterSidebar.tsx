@@ -69,6 +69,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, nigh
                     <Select
                         size="large"
                         className="w-full"
+                        variant="borderless"
                         value={filters.people}
                         onChange={(val) => setFilters("people", val)}
                     >
@@ -90,6 +91,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, nigh
                         placeholder={t('selectDate')}
                         className="rounded-md w-full"
                         format="DD MMM YYYY"
+                        variant="borderless"
                         value={moment(filters.date, "DD MMM YYYY")}
                         onChange={(date) => setFilters("date", date ? date.format("DD MMM YYYY") : "")}
                     />
@@ -105,6 +107,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, nigh
                         className="w-full"
                         value={filters.nights}
                         onChange={(val) => setFilters("nights", val)}
+                        variant="borderless"
                     >
                         {nightOptions.map((nightOption) => (
                             <Option key={nightOption} value={nightOption}>

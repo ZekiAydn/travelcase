@@ -13,7 +13,7 @@ export default function SearchFilter() {
     const [filters, setFilters] = useState({
         from: "",
         destination: "",
-        date: moment().format("DD MMM YYYY"),
+        date: "",
         nights: "1 Night",
         people: "2 People",
     });
@@ -67,29 +67,36 @@ export default function SearchFilter() {
 
                 <div className="flex items-center w-full sm:w-1/6">
                     <CalendarOutlined className="text-gray-700 text-xl"/>
-                    <DatePicker
-                        variant="borderless"
-                        size="small"
-                        placeholder={t('date')}
-                        className="text-gray-700 text-xs w-full"
-                        format="DD MMM"
-                        defaultValue={moment()}
-                        value={moment(filters.date, "DD MMM YYYY")}
-                        onChange={(date) => setFilters({ ...filters, date: date?.format("DD MMM YYYY") || filters.date })}
-                    />
+                    <div>
+                        <p className="text-gray-600 text-xs ml-2">{t('date')}</p>
+                        <DatePicker
+                            suffixIcon={null}
+                            variant="borderless"
+                            size="small"
+                            placeholder={t('date')}
+                            className="text-gray-700 text-xs w-full"
+                            format="DD MMM YYYY"
+                            value={filters.date}
+                            onChange={(e) => setFilters({ ...filters, date: e })}
+                        />
+                    </div>
                 </div>
+
 
                 <Divider type="vertical" className="hidden sm:block h-10 bg-gray-300"/>
 
                 <div className="flex items-center w-full sm:w-1/6">
                     <MoonOutlined className="text-gray-700 text-xl"/>
+                    <div>
+                        <p className="text-gray-600 text-xs ml-2">{t('nights')}</p>
                     <Select
                         variant="borderless"
                         defaultValue="1 Night"
                         size="small"
                         className="text-gray-700 w-full"
                         value={filters.nights}
-                        onChange={(value) => setFilters({ ...filters, nights: value })}
+                        onChange={(value) => setFilters({...filters, nights: value})}
+                        suffixIcon={null}
                     >
                         {nightOptions.map((night) => (
                             <Option key={night} value={night}>
@@ -97,32 +104,37 @@ export default function SearchFilter() {
                             </Option>
                         ))}
                     </Select>
+                    </div>
                 </div>
 
                 <Divider type="vertical" className="hidden sm:block h-10 bg-gray-300"/>
 
                 <div className="flex items-center w-full sm:w-1/6">
                     <TeamOutlined className="text-gray-700 text-xl"/>
-                    <Select
-                        variant="borderless"
-                        defaultValue="2 People"
-                        size="small"
-                        className="text-gray-700 w-full"
-                        value={filters.people}
-                        onChange={(value) => setFilters({ ...filters, people: value })}
-                    >
-                        {peopleOptions.map((people) => (
-                            <Option key={people} value={people}>
-                                {people}
-                            </Option>
-                        ))}
-                    </Select>
+                    <div>
+                        <p className="text-gray-600 text-xs ml-2">{t('participants')}</p>
+                        <Select
+                            variant="borderless"
+                            defaultValue="2 People"
+                            size="small"
+                            className="text-gray-700 w-full"
+                            value={filters.people}
+                            onChange={(value) => setFilters({...filters, people: value})}
+                            suffixIcon={null}
+                        >
+                            {peopleOptions.map((people) => (
+                                <Option key={people} value={people}>
+                                    {people}
+                                </Option>
+                            ))}
+                        </Select>
+                    </div>
+                    </div>
                 </div>
-            </div>
 
-            <Button
-                onClick={handleSearchClick}
-                type="primary"
+                <Button
+                    onClick={handleSearchClick}
+                    type="primary"
                 size="small"
                 className="bg-orange-500 text-white font-semibold p-6 sm:p-6 m-4 rounded-md w-full sm:w-1/4 sm:h-full custom-search-button"
             >
