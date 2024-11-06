@@ -94,10 +94,9 @@ body {
 .filter-input {
   display: flex;
   align-items: center;
-  border: 1px solid #e2e8f0;
   border-radius: 8px;
+  border: 1px solid #e1e1e1;
   padding: 8px;
-  background-color: #f7fafc;
 }
 
 .filter-icon {

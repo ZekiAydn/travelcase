@@ -86,8 +86,6 @@ export default function ResultPage() {
                     setFilters={handleFilterChange}
                     nightOptions={Array.from({ length: 30 }, (_, i) => `${i + 1} Night`)}
                     peopleOptions={Array.from({ length: 30 }, (_, i) => `${i + 1} Person`)}
-                    filtersOpen={true}
-                    setFiltersOpen={() => {}}
                 />
                 <HotelList hotels={filteredData || []} />
             </div>

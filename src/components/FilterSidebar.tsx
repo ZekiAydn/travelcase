@@ -3,6 +3,7 @@ import { CalendarOutlined, EnvironmentOutlined, GlobalOutlined, MoonOutlined, Te
 import { useTranslation } from 'next-i18next';
 import dayjs, {Dayjs} from "dayjs";
 import React, {useState} from "react";
+import HotelConceptSelector from "@/components/ConceptSelector";
 
 const { Option } = Select;
 
@@ -20,12 +21,11 @@ interface FilterSidebarProps {
     setFilters: (key: keyof FilterParams, value: string) => void;
     nightOptions: string[];
     peopleOptions: string[];
-    filtersOpen: boolean;
-    setFiltersOpen: (open: boolean) => void;
 }
 
 
-const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, nightOptions, peopleOptions, filtersOpen, setFiltersOpen }) => {
+const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, nightOptions, peopleOptions}) => {
+    const [filtersOpen, setFiltersOpen] = useState(true)
     const { t } = useTranslation('common');
     const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs(filters.date));
 
@@ -41,110 +41,114 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, setFilters, nigh
 
     return (
         <>
-            <div className="lg:hidden flex items-center justify-end p-4">
+            <div className="lg:hidden flex items-end justify-between">
+                <span></span>
                 <Button
                     type="text"
-                    icon={<FilterOutlined />}
+                    icon={<FilterOutlined/>}
                     onClick={() => setFiltersOpen(!filtersOpen)}
                 >
                     {filtersOpen ? t('hideFilters') : t('showFilters')}
                 </Button>
             </div>
             <div className={`filter-sidebar ${filtersOpen ? "block" : "hidden"} lg:block`}>
-                <h2 className="filter-title">{t('filter')}</h2>
 
-                {/* From Input */}
-                <div className="filter-item">
+                <h2 className="text-xs">{t('filter')}</h2>
+
+                <div className="mb-4">
                     <Input
                         size="large"
                         placeholder={t('from')}
-                        prefix={<EnvironmentOutlined className="filter-icon" />}
+                        prefix={<EnvironmentOutlined style={{color: "#4A5568"}}/>}
+                        className="rounded-md"
                         value={filters.from}
                         onChange={(e) => setFilters("from", e.target.value)}
                     />
                 </div>
 
-                {/* Destination Input */}
-                <div className="filter-item">
+                <div className="mb-4">
                     <Input
                         size="large"
                         placeholder={t('destination')}
-                        prefix={<GlobalOutlined className="filter-icon" />}
+                        prefix={<GlobalOutlined style={{ color: "#4A5568" }} />}
+                        className="rounded-md"
                         value={filters.destination}
                         onChange={(e) => setFilters("destination", e.target.value)}
                     />
                 </div>
 
-                {/* Participants Select */}
-                <div className="filter-item">
-                    <label className="filter-label">{t('participants')}</label>
-                    <div className="filter-input">
-                        <TeamOutlined className="filter-icon" />
+                <div className="mb-4">
+                    <label className="text-xs mb-4">{t('participants')}</label>
+                    <div className="flex items-center space-x-2 w-full sm:w-auto border rounded-lg">
+                        <TeamOutlined style={{ color: "#4A5568", marginLeft: 14 }} />
                         <Select
                             size="large"
+                            variant={"borderless"}
                             className="w-full"
                             value={filters.people}
                             onChange={(val) => setFilters("people", val)}
                         >
-                            {peopleOptions.map((option) => (
-                                <Option key={option} value={option}>
-                                    {option}
+                            {peopleOptions.map((peopleOption) => (
+                                <Option key={peopleOption} value={peopleOption}>
+                                    {peopleOption}
                                 </Option>
                             ))}
                         </Select>
                     </div>
                 </div>
 
-                {/* Date Picker */}
-                <div className="filter-item">
-                    <label className="filter-label">{t('date')}</label>
-                    <div className="filter-input">
-                        <CalendarOutlined className="filter-icon" />
+                <div className="mb-4">
+                    <label className="text-xs mb-4">{t('date')}</label>
+                    <div className="flex items-center space-x-2 w-full sm:w-auto border rounded-lg">
+                        <CalendarOutlined className="text-gray-700 text-xl ml-3" />
                         <DatePicker
                             size="large"
+                            variant="borderless"
                             placeholder={t('date')}
                             format="DD MMM"
                             value={selectedDate}
                             onChange={(date) =>handleDateChange(date)}
-                            className="w-full"
+                            className="w-full rounded-md"
                         />
                     </div>
                 </div>
 
-                {/* Nights Select */}
-                <div className="filter-item">
-                    <label className="filter-label">{t('nights')}</label>
-                    <div className="filter-input">
-                        <MoonOutlined className="filter-icon" />
+                <div className="mb-4">
+                    <label className="text-xs mb-4">{t('nights')}</label>
+                    <div className="flex items-center space-x-2 w-full sm:w-auto border rounded-lg">
+                        <MoonOutlined style={{ color: "#4A5568", marginLeft: 14 }} />
                         <Select
+                            variant={"borderless"}
                             size="large"
+                            className="w-full"
                             value={filters.nights}
                             onChange={(val) => setFilters("nights", val)}
-                            className="w-full"
                         >
-                            {nightOptions.map((option) => (
-                                <Option key={option} value={option}>
-                                    {option}
+                            {nightOptions.map((nightOption) => (
+                                <Option key={nightOption} value={nightOption}>
+                                    {nightOption}
                                 </Option>
                             ))}
                         </Select>
                     </div>
                 </div>
 
-                {/* Star Rating */}
-                <div className="filter-item">
-                    <label className="filter-label">{t('star')}</label>
-                    <Radio.Group onChange={(e) => setFilters("rating", e.target.value)} className="filter-radio-group">
-                        {[1, 2, 3, 4, 5].map((value) => (
-                            <Radio key={value} value={`${value}+`}>
-                                {[...Array(value)].map((_, index) => (
-                                    <StarFilled key={index} className="star-icon" />
-                                ))}{" "}
-                                {value}+
-                            </Radio>
-                        ))}
-                    </Radio.Group>
-                </div>
+                <HotelConceptSelector />
+
+                <h3 className="text-xs mt-4">{t('star')}</h3>
+                <Radio.Group
+                    className="flex flex-col space-y-2 custom-ratio-input"
+                    onChange={(e) => setFilters("rating", e.target.value)}
+                >
+                    {[1, 2, 3, 4, 5].map((value) => (
+                        <Radio key={value} value={`${value}+`}>
+                            {[...Array(value)].map((_, index) => (
+                                <StarFilled key={index} style={{ color: "#FFA500" }} />
+                            ))}{" "}
+                            {value}+
+                        </Radio>
+                    ))}
+                </Radio.Group>
             </div>
         </>
     );
