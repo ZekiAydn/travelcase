@@ -1,13 +1,13 @@
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Spin } from "antd";
 import Layout from "@/components/Layout";
 import FilterSidebar from "@/components/FilterSidebar";
 import HotelList from "@/components/HotelList";
-import { useTranslation } from 'next-i18next';
-import { GetStaticProps } from "next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useState, useEffect } from "react";
-import { mockData } from "@/data/data";
+import fetchData from "@/utils/fetchData";
+import {GetStaticProps} from "next";
+import {serverSideTranslations} from "next-i18next/serverSideTranslations";
 
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
@@ -18,57 +18,64 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     };
 };
 
+
+interface FilterParams {
+    from: string;
+    destination: string;
+    date: string;
+    nights: string;
+    people: string;
+    rating:string;
+}
+
 export default function ResultPage() {
-    const { t } = useTranslation('common');
     const router = useRouter();
-    const [loading, setLoading] = useState(true);
-    const [filtersOpen, setFiltersOpen] = useState(true);
-    const [filters, setFilters] = useState({
-        from: Array.isArray(router.query.from) ? router.query.from[0] : router.query.from || "",
-        destination: Array.isArray(router.query.destination) ? router.query.destination[0] : router.query.destination || "",
-        date: Array.isArray(router.query.date) ? router.query.date[0] : router.query.date || "",
-        nights: Array.isArray(router.query.nights) ? router.query.nights[0] : router.query.nights || "5 Nights",
-        people: Array.isArray(router.query.people) ? router.query.people[0] : router.query.people || "2 People",
+    const [filters, setFilters] = useState<FilterParams>({
+        from: "",
+        destination: "",
+        date: "",
+        nights: "1 Night",
+        people: "2 People",
+        rating:"",
     });
 
-
-    const [filteredData, setFilteredData] = useState(mockData);
-
-    const nightOptions = Array.from({ length: 30 }, (_, i) => `${i + 1} ${t('night', { count: i + 1 })}`);
-    const peopleOptions = Array.from({ length: 30 }, (_, i) => `${i + 1} ${t('person', { count: i + 1 })}`);
-
     useEffect(() => {
-        const timer = setTimeout(() => setLoading(false), 1000);
-        return () => clearTimeout(timer);
-    }, []);
-
-    useEffect(() => {
-        const newFilteredData = mockData.filter((hotel) => {
-            const hotelNights = `${hotel.nights} ${t('night', { count: hotel.nights })}`;
-            const totalPeople = Array.isArray(filters.people)
-                ? parseInt(filters.people[0], 10)
-                : parseInt(filters.people.split(" ")[0], 10);
-
-            return hotelNights === filters.nights && hotel.adults + hotel.children === totalPeople;
+        const { from, destination, date, nights, people } = router.query;
+        console.log(date)
+        setFilters({
+            from: (from as string) || "",
+            destination: (destination as string) || "",
+            date: (date as string) || "",
+            nights: (nights as string) || "1 Night",
+            people: (people as string) || "2 People",
+            rating:"",
         });
-        setFilteredData(newFilteredData);
-    }, [filters]);
+    }, [router.query]);
 
-    const handleFilterChange = (key: string, value: string) => {
+    const { data: filteredData, isLoading, error } = useQuery({
+        queryKey: ['filteredResults', filters] as [string, FilterParams],
+        queryFn: ({ queryKey }) => fetchData({ queryKey }),
+    });
+
+    const handleFilterChange = (key: keyof FilterParams, value: string) => {
         setFilters((prevFilters) => ({
             ...prevFilters,
             [key]: value,
         }));
     };
 
-    if (loading) {
+    if (isLoading) {
         return (
             <Layout>
                 <div className="flex justify-center items-center h-screen">
-                    <Spin size="large" tip={t('loading')} />
+                    <Spin size="large" />
                 </div>
             </Layout>
         );
+    }
+
+    if (error) {
+        return <div>Error loading data</div>;
     }
 
     return (
@@ -77,12 +84,12 @@ export default function ResultPage() {
                 <FilterSidebar
                     filters={filters}
                     setFilters={handleFilterChange}
-                    nightOptions={nightOptions}
-                    peopleOptions={peopleOptions}
-                    filtersOpen={filtersOpen}
-                    setFiltersOpen={setFiltersOpen}
+                    nightOptions={Array.from({ length: 30 }, (_, i) => `${i + 1} Night`)}
+                    peopleOptions={Array.from({ length: 30 }, (_, i) => `${i + 1} Person`)}
+                    filtersOpen={true}
+                    setFiltersOpen={() => {}}
                 />
-                <HotelList hotels={filteredData} />
+                <HotelList hotels={filteredData || []} />
             </div>
         </Layout>
     );

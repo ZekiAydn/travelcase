@@ -1,14 +1,16 @@
 import { CalendarOutlined, EnvironmentOutlined, MoonOutlined, SearchOutlined, TeamOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Divider, Input, Select } from "antd";
 import { useState } from "react";
-import { useRouter } from "next/router";
 import { useTranslation } from 'next-i18next';
+import { useRouter } from "next/router";
+import moment from "moment";
 
 const { Option } = Select;
 
 export default function SearchFilter() {
     const { t } = useTranslation('common');
     const router = useRouter();
+
     const [filters, setFilters] = useState({
         from: "",
         destination: "",
@@ -18,18 +20,12 @@ export default function SearchFilter() {
     });
 
     const handleSearchClick = () => {
-        const queryString = new URLSearchParams(filters).toString();
+        const queryString = new URLSearchParams(filters as Record<string, string>).toString();
         router.push(`/result?${queryString}`);
     };
 
-    const nightOptions = Array.from(
-        { length: 30 },
-        (_, i) => `${i + 1} ${t('night', { count: i + 1 })}`
-    );
-    const peopleOptions = Array.from(
-        { length: 30 },
-        (_, i) => `${i + 1} ${t('person', { count: i + 1 })}`
-    );
+    const nightOptions = Array.from({ length: 30 }, (_, i) => `${i + 1} ${t('night', { count: i + 1 })}`);
+    const peopleOptions = Array.from({ length: 30 }, (_, i) => `${i + 1} ${t('person', { count: i + 1 })}`);
 
     return (
         <div
@@ -75,8 +71,8 @@ export default function SearchFilter() {
                             placeholder={t('date')}
                             className="text-gray-700 text-xs w-full"
                             format="DD MMM"
-                            value={filters.date}
-                            onChange={(e) => setFilters({ ...filters, date: e })}
+                            value={filters.date ? moment(filters.date) : null} // Değer varsa moment ile oluşturulmuş olmalı
+                            onChange={(date) => setFilters({ ...filters, date: date ? date.format("YYYY-MM-DD") : "" })}
                         />
                     </div>
                 </div>
