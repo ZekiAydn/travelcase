@@ -33,7 +33,7 @@ const LanguageSelector = () => {
     );
 
     return (
-        <div className="fixed top-4 right-4 z-50">
+        <div className="top-4 right-4 z-50">
             <Dropdown overlay={menu} trigger={['click']}>
                 <div className="flex items-center cursor-pointer">
                     <Image
